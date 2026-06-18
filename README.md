@@ -2,7 +2,7 @@
 
 > A state-of-the-art, enterprise-grade, **product-agnostic** hexagonal security platform built on
 > Spring Security 6 and Project Reactor (WebFlux). It replaces and absorbs the legacy
-> `fireflyframework-idp` broker and the custom resource-server / authorization code that was
+> `fireflyframework-security-idp` broker and the custom resource-server / authorization code that was
 > scattered across `fireflyframework-starter-application` and `fireflyframework-backoffice`.
 
 - **Group / versioning:** `org.fireflyframework`, CalVer `26.MM.PP` (aligned with
@@ -22,7 +22,7 @@
 Firefly's "security" used to be **two disconnected halves** that never actually talked to each
 other, sitting on top of a framework that had no real authentication enforcement:
 
-- **Half 1 — the IdP broker** (`fireflyframework-idp` + four vendor adapters). A single *fat*
+- **Half 1 — the IdP broker** (`fireflyframework-security-idp` + four vendor adapters). A single *fat*
   reactive port (`IdpAdapter`, 21 methods plus a default `registerUser`) with 24 vendor-neutral
   DTOs and a 1:1 passthrough `IdpController` under `/idp`. The provider was chosen by
   `firefly.idp.provider`: **keycloak** (Admin Client + WebClient OIDC), **aws-cognito** (sync SDK
@@ -114,7 +114,7 @@ It validates a presented bearer token — signature / issuer / audience / expiry
 introspection for opaque tokens — and projects it into a `SecurityPrincipal`. It **never returns
 an unvalidated principal**: any validation failure raises `TokenValidationException`. This mirrors
 the pyfly/rust ports and keeps the two tiers decoupled; the IdP tier
-(`fireflyframework-idp` + the Keycloak / Cognito / Entra / internal-db providers) knows nothing
+(`fireflyframework-security-idp` + the Keycloak / Cognito / Entra / internal-db providers) knows nothing
 about the security chain, and vice versa.
 
 ### The generic principal
@@ -173,9 +173,9 @@ is propagated end-to-end via the Reactor Context.
 |---|---|
 | `fireflyframework-security-test` | `TestPrincipals` factories and a configurable `FakePolicyDecisionPort` for asserting permit/deny paths without a live PDP. |
 
-Plus the **refactored IdP tier**: `fireflyframework-idp` no longer carries `UserRoleEnum` or
+Plus the **refactored IdP tier**: `fireflyframework-security-idp` no longer carries `UserRoleEnum` or
 `partyId`, its fat `IdpAdapter` is segregated into six capability ports (with `NotSupported`
-defaults so all four provider adapters still build), and `fireflyframework-idp-keycloak` no longer
+defaults so all four provider adapters still build), and `fireflyframework-security-idp-keycloak` no longer
 writes a `partyId`/`userRole` user attribute.
 
 ---
@@ -361,20 +361,29 @@ a bean. `TokenValidationPort` is the single join between the idp and security ti
 GREEN: `security-{api, spi, core, webflux, resource-server, method-policy, oauth2-client,
 authorization-server, test}` and `security-adapter-{opa, cerbos, openfga, vault, r2dbc}`.
 
-**Seven existing repositories** changed behind open, **unmerged** pull requests:
+**The IdP tier was renamed into the security family.** The five identity-broker repositories were
+migrated from `fireflyframework-idp[-*]` to `fireflyframework-security-idp[-*]` — GitHub repos
+renamed (old URLs redirect), Maven artifactIds changed, and the Java base package moved from
+`org.fireflyframework.idp` to `org.fireflyframework.security.idp`. The single BOM manages the new
+coordinates. Verified locally with `mvn -DskipTests clean package` (BUILD SUCCESS) on every module.
 
-| Repository (`fireflyframework-…`) | PR | Branch | Change |
+| Repository (`fireflyframework-…`) | PR | Status | Change |
 |---|---|---|---|
-| `idp` | #13 | `feature/agnostic-de-domain` | segregate the fat `IdpAdapter` into capability ports + de-domain DTOs |
-| `idp-keycloak` | #13 | `feature/agnostic-de-domain` | drop `partyId` / `userRole` user-attribute writes |
-| `bom` | #22 | `feature/security-platform-bom` | manage the 14 security modules in the single BOM |
-| `parent` | #30 | `feature/manage-observability-and-security` | observability + security in `dependencyManagement` |
-| `starter-application` | #12 | `feature/wire-security-platform` | wire security + de-domain (180 tests green) |
-| `backoffice` | #11 | `feature/agnostic-de-domain` | de-domain off the party/contract context (13 tests green) |
-| `claude-skills` | #1 | `feature/security-skills` | security skills + agent (v1.21.0) |
+| `security-idp` (was `idp`) | #13 / #14 | **merged** | segregate the fat `IdpAdapter` into capability ports + de-domain DTOs; rename to `security-idp` |
+| `bom` | #23 | **merged** | manage the renamed `security-idp[-*]` coordinates |
+| `security-idp-keycloak` (was `idp-keycloak`) | #14 | open | rename to `security-idp-keycloak` (CI pending published base) |
+| `security-idp-aws-cognito` (was `idp-aws-cognito`) | #13 | open | rename to `security-idp-aws-cognito` (CI pending published base) |
+| `security-idp-azure-ad` (was `idp-azure-ad`) | #4 | open | rename to `security-idp-azure-ad` (CI pending published base) |
+| `security-idp-internal-db` (was `idp-internal-db`) | #13 | open | rename to `security-idp-internal-db` (CI pending published base) |
+| `bom` | #22 | open | manage the 14 security modules in the single BOM |
+| `parent` | #30 | open | observability + security in `dependencyManagement` |
+| `starter-application` | #12 | open | wire security + de-domain (180 tests green) |
+| `backoffice` | #11 | open | de-domain off the party/contract context (13 tests green) |
+| `claude-skills` | #1 | open | security skills + agent + `security-idp` rename |
 
-Nothing is released to GitHub releases or Maven Central yet; the PRs are intentionally left open
-for review.
+The four provider rename PRs are correct and build green locally; their CI cannot resolve the
+renamed base artifact until `fireflyframework-security-idp` is published, so they remain open
+pending the next release. Nothing is released to GitHub Releases or Maven Central yet.
 
 ---
 

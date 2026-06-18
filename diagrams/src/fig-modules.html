@@ -15,9 +15,9 @@
 </style></head>
 <body><div id="fig" class="frame">
   <div class="head">
-    <div><div class="eyebrow">Module map · 14 new + idp refactor</div>
+    <div><div class="eyebrow">Module map · 14 new + idp→security-idp migration</div>
       <div class="title">What ships in the platform</div>
-      <div class="sub">All 14 modules build green and are published; the four idp adapters were refactored onto the new segregated ports.</div></div>
+      <div class="sub">All 14 modules build green; the identity-broker tier was renamed into the security family and refactored onto the new segregated ports.</div></div>
     <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
   </div>
   <div class="body">
@@ -54,14 +54,14 @@
     </div>
 
     <div class="cat" style="margin-bottom:0">
-      <div class="cathead"><span class="dot" style="background:var(--in)"></span><span class="t">IdP tier · refactored</span><span class="c">test + idp + 4 providers</span></div>
+      <div class="cathead"><span class="dot" style="background:var(--in)"></span><span class="t">IdP tier · renamed</span><span class="c">test + security-idp + 4 providers</span></div>
       <div class="mgrid" style="grid-template-columns:repeat(6,1fr)">
         <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-test</div><div class="md">fixtures · fake PDP</div></div>
-        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp</div><div class="md">segregated ports + de-domain</div></div>
-        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-keycloak</div></div>
-        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-aws-cognito</div></div>
-        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-azure-ad</div></div>
-        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-internal-db</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-idp</div><div class="md">segregated ports + de-domain</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-idp-keycloak</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-idp-aws-cognito</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-idp-azure-ad</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-idp-internal-db</div></div>
       </div>
     </div>
 
