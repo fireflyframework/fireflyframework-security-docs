@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<!-- FIGURE TEMPLATE.  Copy to  diagramas/src/fig-<name>.html  and edit.
+     render.py screenshots the #fig element.  Do NOT put a figure number here —
+     the docx caption auto-numbers.  Width: set #fig width to taste (1100–1340).
+     Kit components: see references/diagram-authoring.md (node, card, layer, kpi,
+     callout, legend, chip, badge, arrow-h, and inline <svg> for graphs/sequences). -->
+<style>
+  body{padding:34px}
+  #fig{width:1280px}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div>
+      <div class="eyebrow">Section label</div>
+      <div class="title">A clear, specific figure title</div>
+      <div class="sub">One sentence of context that tells the reader what to take away from this figure.</div>
+    </div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Brand<small>context</small></div></div>
+  </div>
+  <div class="body">
+
+    <!-- EXAMPLE: a row of typed nodes (replace with your content) -->
+    <div class="grid cols-4" style="gap:12px">
+      <div class="node t-agent center lg"><div class="ic">◆</div><div class="nt" style="margin-top:7px">Agent</div></div>
+      <div class="node t-tool center lg"><div class="ic">⚙</div><div class="nt" style="margin-top:7px">Tool</div></div>
+      <div class="node t-rag center lg"><div class="ic">▤</div><div class="nt" style="margin-top:7px">Data</div></div>
+      <div class="node t-out center lg"><div class="ic">⇤</div><div class="nt" style="margin-top:7px">Output</div></div>
+    </div>
+
+    <div class="callout mt"><span class="ic">◆</span><div class="tx"><b>Takeaway.</b> Use callouts to highlight the
+      single most important point of the figure.</div></div>
+
+    <div class="fnote"><span class="k">Note</span> Optional footnote / caveat row.</div>
+  </div>
+</div></body></html>

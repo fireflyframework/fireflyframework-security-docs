@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1280px}
+  .cat{margin-bottom:14px}
+  .cathead{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .cathead .dot{width:11px;height:11px;border-radius:3px}
+  .cathead .t{font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+  .cathead .c{font-family:'JetBrains Mono';font-size:11.5px;color:var(--muted-2);font-weight:600}
+  .mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .mc{border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:#fff;box-shadow:var(--sh)}
+  .mc .mn{font-family:'JetBrains Mono';font-size:12.5px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+  .mc .md{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .mc.ok{position:relative}
+  .mc.ok .ck{position:absolute;right:11px;top:11px;color:var(--ok);font-size:13px;font-weight:800}
+  .mc.ok .ck .i{font-size:12px}.mc .md .i{font-size:12px;color:var(--ok);vertical-align:-1px}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Module map · 14 new + idp refactor</div>
+      <div class="title">What ships in the platform</div>
+      <div class="sub">All 14 modules build green and are published; the four idp adapters were refactored onto the new segregated ports.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+
+    <div class="cat">
+      <div class="cathead"><span class="dot" style="background:var(--tool)"></span><span class="t">The hexagon</span><span class="c">api · spi · core · webflux</span></div>
+      <div class="mgrid">
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-api</div><div class="md">domain + driving ports + @Secure</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-spi</div><div class="md">13 driven ports</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-core</div><div class="md">engine: mapping · @Secure eval · embedded PDP · cache · keys</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-webflux</div><div class="md">Spring Security binding · URL PEP</div></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cathead"><span class="dot" style="background:var(--valid)"></span><span class="t">Delivery</span><span class="c">resource-server · method-policy · oauth2-client · authorization-server</span></div>
+      <div class="mgrid">
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-resource-server</div><div class="md">secure-by-default JWT/opaque RS</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-method-policy</div><div class="md">@EnableReactiveMethodSecurity · @Secure</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-oauth2-client</div><div class="md">BFF · client_credentials · token relay</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-authorization-server</div><div class="md">servlet OIDC · separate deployable</div></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cathead"><span class="dot" style="background:var(--out)"></span><span class="t">Adapters</span><span class="c">policy · relationship · secrets · revocation</span></div>
+      <div class="mgrid" style="grid-template-columns:repeat(5,1fr)">
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">adapter-opa</div><div class="md">ABAC <i class="i i-container"></i></div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">adapter-cerbos</div><div class="md">ABAC <i class="i i-container"></i></div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">adapter-openfga</div><div class="md">ReBAC <i class="i i-container"></i></div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">adapter-vault</div><div class="md">Secrets <i class="i i-container"></i></div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">adapter-r2dbc</div><div class="md">Revocation <i class="i i-container"></i></div></div>
+      </div>
+    </div>
+
+    <div class="cat" style="margin-bottom:0">
+      <div class="cathead"><span class="dot" style="background:var(--in)"></span><span class="t">IdP tier · refactored</span><span class="c">test + idp + 4 providers</span></div>
+      <div class="mgrid" style="grid-template-columns:repeat(6,1fr)">
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">security-test</div><div class="md">fixtures · fake PDP</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp</div><div class="md">segregated ports + de-domain</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-keycloak</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-aws-cognito</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-azure-ad</div></div>
+        <div class="mc ok"><span class="ck"><i class="i i-check"></i></span><div class="mn">idp-internal-db</div></div>
+      </div>
+    </div>
+
+  </div>
+</div></body></html>

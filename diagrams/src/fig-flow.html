@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1300px}
+  .rail{display:flex;align-items:stretch;gap:0}
+  .st{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:var(--sh);position:relative}
+  .st::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--c,var(--brand))}
+  .st .n{font-family:'JetBrains Mono';font-size:11px;color:var(--muted-2);font-weight:700}
+  .st .t{font-size:14px;font-weight:800;letter-spacing:-.01em;margin-top:3px;line-height:1.15}
+  .st .d{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.35}
+  .chev{width:26px;color:var(--brand);font-size:20px;font-weight:800}
+  .c-in{--c:var(--in)}.c-val{--c:var(--valid)}.c-tool{--c:var(--tool)}.c-agent{--c:var(--agent)}.c-out{--c:var(--out)}
+  .branch{display:flex;gap:12px;margin-top:16px}
+  .bcard{flex:1;border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:var(--surface)}
+  .bcard .h{font-weight:800;font-size:13.5px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .bcard .h .dot{width:9px;height:9px;border-radius:50%}
+  .bcard .x{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Secure-by-default · fail-closed</div>
+      <div class="title">A request through the security chain</div>
+      <div class="sub">Default-deny everywhere; only a signature-validated principal reaches the controller; every decision is audited.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="rail">
+      <div class="st c-in"><div class="n">01 · inbound</div><div class="t">Bearer token</div><div class="d">Authorization: Bearer …</div></div>
+      <div class="chev">›</div>
+      <div class="st c-val"><div class="n">02 · filter</div><div class="t">SecurityWebFilterChain</div><div class="d">default-deny · CSRF off (bearer) · hardened headers</div></div>
+      <div class="chev">›</div>
+      <div class="st c-tool"><div class="n">03 · validate</div><div class="t">TokenValidationPort</div><div class="d">verify signature / iss / aud / exp</div></div>
+      <div class="chev">›</div>
+      <div class="st c-agent"><div class="n">04 · project</div><div class="t">SecurityPrincipal</div><div class="d">into ReactiveSecurityContext</div></div>
+      <div class="chev">›</div>
+      <div class="st c-val"><div class="n">05 · authorize</div><div class="t">URL PEP + PolicyDecisionPort</div><div class="d">RBAC + ABAC/ReBAC · fail-closed</div></div>
+      <div class="chev">›</div>
+      <div class="st c-out"><div class="n">06 · method</div><div class="t">@Secure → controller</div><div class="d">method security, then your code</div></div>
+    </div>
+
+    <div class="branch">
+      <div class="bcard"><div class="h"><span class="dot" style="background:var(--tool)"></span>JWT path</div><div class="x"><b>NimbusReactiveJwtDecoder</b> + JWKS from <code>KeyManagementPort</code>; iss/aud/exp validators. Forged, expired or wrong-audience tokens → <b>401</b>.</div></div>
+      <div class="bcard"><div class="h"><span class="dot" style="background:var(--memory)"></span>Opaque path</div><div class="x"><b>ReactiveOpaqueTokenIntrospector</b> → the IdP <code>TokenIntrospectionPort</code>, cached with TTL ≤ <code>exp</code> via <code>TokenIntrospectionCachePort</code>.</div></div>
+      <div class="bcard"><div class="h"><span class="dot" style="background:var(--brand)"></span>Audit &amp; outcomes</div><div class="x"><code>AuditEventPort</code> emits at each decision. No token → <b>401</b>; policy denial → <b>403</b>; PDP/introspection error → <b>deny</b>.</div></div>
+    </div>
+  </div>
+</div></body></html>

@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1300px}
+  .split{display:flex;align-items:stretch;gap:0}
+  .pane{flex:1;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+  .ph{display:flex;align-items:center;gap:11px;padding:14px 18px;color:#fff}
+  .ph .ic{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+  .ph .ic .i{font-size:17px}
+  .ph .t{font-size:17px;font-weight:850;letter-spacing:-.01em}.ph .s{font-size:11.5px;opacity:.9}
+  .before .ph{background:linear-gradient(135deg,#52566f,#3A3D55)}
+  .after  .ph{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+  .pb{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .mc{border:1px solid var(--line);border-radius:11px;padding:10px 13px;background:var(--surface)}
+  .mc .h{font-weight:800;font-size:13.5px;color:var(--ink)}.mc .d{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .disc{display:flex;align-items:center;gap:7px;justify-content:center;color:#b42318;font-size:12px;font-weight:800;font-family:'JetBrains Mono';padding:2px}
+  .disc .i{font-size:12px}
+  .seamline{display:flex;align-items:center;gap:7px;justify-content:center;color:var(--brand-ink);font-size:11.5px;font-weight:800;font-family:'JetBrains Mono';padding:2px}
+  .seamline .i{font-size:13px}
+  .flags{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  .fl{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-soft)}
+  .fl .b{flex:none;width:16px;display:flex;justify-content:center}.fl .b .i{font-size:13px}
+  .fl.bad .b{color:#D92D20}.fl.good .b{color:var(--ok)}
+  .mid{width:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  .mid .ar{color:var(--brand)}.mid .ar .i{font-size:28px}
+  .mid .lb{font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);writing-mode:vertical-rl;transform:rotate(180deg)}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">The transformation</div>
+      <div class="title">From two disconnected halves to one platform</div>
+      <div class="sub">The IdP broker and the starter’s authorization never met; the platform unifies them behind one hexagon and one seam.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="split">
+
+      <div class="pane before">
+        <div class="ph"><div class="ic"><i class="i i-x"></i></div><div><div class="t">Before</div><div class="s">fireflyframework-idp + custom starter authz</div></div></div>
+        <div class="pb">
+          <div class="mc"><div class="h">IdP broker</div><div class="d">fat <span class="mono">IdpAdapter</span> · 21 methods · vendor SDKs</div></div>
+          <div class="disc"><i class="i i-x"></i> never connected</div>
+          <div class="mc"><div class="h">Application authorization</div><div class="d"><span class="mono">@Secure</span> AOP aspect · self-built context</div></div>
+          <div class="flags">
+            <div class="fl bad"><span class="b"><i class="i i-alert"></i></span>No Spring Security on the classpath</div>
+            <div class="fl bad"><span class="b"><i class="i i-alert"></i></span>Inbound JWT signatures never validated</div>
+            <div class="fl bad"><span class="b"><i class="i i-alert"></i></span>Identity from a trusted <span class="mono">X-Party-Id</span> header (spoofable)</div>
+            <div class="fl bad"><span class="b"><i class="i i-alert"></i></span>Fail-<b>open</b> default · no global default-deny</div>
+            <div class="fl bad"><span class="b"><i class="i i-alert"></i></span>firefly-oss product domain leaked into the framework</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mid"><div class="lb">refactor</div><div class="ar"><i class="i i-arrow-r"></i></div></div>
+
+      <div class="pane after">
+        <div class="ph"><div class="ic"><i class="i i-check"></i></div><div><div class="t">After</div><div class="s">fireflyframework-security · Spring Security 6</div></div></div>
+        <div class="pb">
+          <div class="mc"><div class="h">One hexagon</div><div class="d">api · spi · core · webflux → resource-server → adapters</div></div>
+          <div class="seamline"><i class="i i-link"></i> TokenValidationPort</div>
+          <div class="mc"><div class="h">IdP tier — decoupled</div><div class="d">idp + keycloak / cognito / entra / internal-db</div></div>
+          <div class="flags">
+            <div class="fl good"><span class="b"><i class="i i-check"></i></span>Reactive Spring Security 6, secure-by-default</div>
+            <div class="fl good"><span class="b"><i class="i i-check"></i></span>Every token signature-validated → <span class="mono">SecurityPrincipal</span></div>
+            <div class="fl good"><span class="b"><i class="i i-check"></i></span>Identity from the validated context, no trusted header</div>
+            <div class="fl good"><span class="b"><i class="i i-check"></i></span>Default-deny · fail-closed everywhere</div>
+            <div class="fl good"><span class="b"><i class="i i-check"></i></span>Product-agnostic — party / contract / product gone</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div></body></html>

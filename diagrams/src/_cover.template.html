@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<!-- COVER TEMPLATE.  Copy to  diagramas/src/cover.html  and edit.
+     render.py screenshots this full-page at Letter ratio (816×1056) -> cover.png,
+     which build_doc.py places full-bleed on page 1.  Keep it exactly one page. -->
+<style>
+  html,body{width:816px;height:1056px;overflow:hidden}
+  .cover{position:relative;width:816px;height:1056px;overflow:hidden;padding:62px 66px;display:flex;flex-direction:column;
+    color:var(--d-ink);background:radial-gradient(120% 80% at 82% -8%, #23233a 0%, #14141f 38%, #0C0C13 78%)}
+  .grid-bg{position:absolute;inset:0;background-image:
+     linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+     background-size:46px 46px;mask-image:radial-gradient(120% 90% at 70% 10%,#000 0%,transparent 75%)}
+  .orb{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;width:380px;height:380px;right:-90px;top:60px;
+    background:radial-gradient(circle at 50% 50%,rgba(255,107,53,.5),rgba(255,107,53,0) 62%)}
+  .top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:3}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .mk{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 6px 20px rgba(255,107,53,.5)}
+  .brand .wm{font-weight:800;font-size:17px}.brand .wm small{display:block;font-weight:500;font-size:10.5px;color:var(--d-muted);letter-spacing:.14em}
+  .vtag{font-family:'JetBrains Mono';font-size:12.5px;color:var(--d-muted);border:1px solid var(--d-line);border-radius:999px;padding:6px 13px}
+  .mid{position:relative;z-index:3;margin-top:120px}
+  .eb{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--brand);background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.28);padding:8px 16px;border-radius:999px}
+  h1{font-size:64px;line-height:1.03;font-weight:900;letter-spacing:-.03em;margin:26px 0 0;
+    background:linear-gradient(180deg,#fff 30%,#cfd0e4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .rule{width:96px;height:5px;border-radius:5px;margin:30px 0 24px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+  .lead{font-size:20px;line-height:1.5;color:#c9cbe0;max-width:600px}.lead b{color:#fff}
+  .spacer{flex:1}
+  .foot{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--d-line);padding-top:22px}
+  .foot .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:700}
+  .foot .v{font-size:15px;font-weight:700;margin-top:5px;color:#e9eaf5}
+  .foot .r{text-align:right;font-family:'JetBrains Mono';font-size:12.5px;color:var(--d-muted);line-height:1.7}
+</style></head>
+<body><div class="cover">
+  <div class="grid-bg"></div><div class="orb"></div>
+  <!-- To use a logo image: replace .brand with  <img src="logo-light.svg" style="height:48px"> -->
+  <div class="top"><div class="brand"><div class="mk"></div><div class="wm">BRAND<small>ORGANIZATION</small></div></div>
+    <div class="vtag">v1.0 · 2026</div></div>
+  <div class="mid">
+    <span class="eb">● Document type</span>
+    <h1>Document<br>Title Here</h1>
+    <div class="rule"></div>
+    <div class="lead">A one or two sentence <b>subtitle</b> that frames what this document is and who it is for.</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="foot"><div><div class="k">Document</div><div class="v">Functional Definition · Architecture</div></div>
+    <div class="r">Version 1.0 — 2026<br>© Your Company Inc. 2026</div></div>
+</div></body></html>

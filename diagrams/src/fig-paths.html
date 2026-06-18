@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1240px}
+  .col{display:flex;flex-direction:column;gap:0}
+  .colhead{display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:16px 16px 0 0;color:#fff}
+  .colhead.with{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+  .colhead.without{background:linear-gradient(135deg,#3A3D55,#52566f)}
+  .colhead .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+  .colhead .ic .i{font-size:18px}
+  .colhead .t{font-size:18px;font-weight:850;letter-spacing:-.01em}
+  .colhead .s{font-size:12.5px;opacity:.9;margin-top:1px}
+  .colbody{border:1px solid var(--line);border-top:none;border-radius:0 0 16px 16px;padding:18px 20px;display:flex;flex-direction:column;gap:13px;background:#fff;flex:1}
+  .pom{font-family:'JetBrains Mono';font-size:11.5px;line-height:1.5;background:#15130d;color:#ffd9a8;border-radius:10px;padding:12px 14px;white-space:pre;overflow:hidden}
+  .pom .k{color:#8a8f73}
+  .li{display:flex;gap:9px;font-size:13.5px;color:var(--ink-soft);line-height:1.4}
+  .li .b{color:var(--brand);font-weight:800;flex:none}
+  .li.no .b{color:#8a8fa6}
+  .cfg{font-family:'JetBrains Mono';font-size:11.5px;line-height:1.55;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;white-space:pre;color:var(--ink-soft)}
+  .cfg .c{color:var(--brand-ink);font-weight:700}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Two delivery paths</div>
+      <div class="title">Secured with — and without — the starters</div>
+      <div class="sub">The same secure-by-default resource server, whether it arrives transitively via the application starter or is added directly.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="grid cols-2" style="gap:22px;align-items:stretch">
+
+      <div class="col">
+        <div class="colhead with"><div class="ic"><i class="i i-star"></i></div><div><div class="t">With the application starter</div><div class="s">secure-by-default · zero security code</div></div></div>
+        <div class="colbody">
+          <div class="pom"><span class="k">&lt;dependency&gt;</span>
+  &lt;groupId&gt;org.fireflyframework&lt;/groupId&gt;
+  &lt;artifactId&gt;fireflyframework-<b>starter-application</b>&lt;/artifactId&gt;
+<span class="k">&lt;/dependency&gt;</span></div>
+          <div class="li"><span class="b">▸</span><div>Pulls <b>security-resource-server</b> + <b>method-policy</b> transitively.</div></div>
+          <div class="li"><span class="b">▸</span><div>Every reactive web app is <b>default-deny</b> out of the box.</div></div>
+          <div class="li"><span class="b">▸</span><div>JWT validation, <code>@Secure</code>, hardened headers — already on.</div></div>
+          <div class="li"><span class="b">▸</span><div>You only declare the <b>public</b> routes (permit-matchers).</div></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="colhead without"><div class="ic"><i class="i i-shield"></i></div><div><div class="t">Without the starter</div><div class="s">standalone resource server</div></div></div>
+        <div class="colbody">
+          <div class="pom"><span class="k">&lt;dependency&gt;</span>
+  &lt;groupId&gt;org.fireflyframework&lt;/groupId&gt;
+  &lt;artifactId&gt;fireflyframework-<b>security-resource-server</b>&lt;/artifactId&gt;
+<span class="k">&lt;/dependency&gt;</span>   <span class="k">&lt;!-- + -method-policy for @Secure --&gt;</span></div>
+          <div class="li no"><span class="b">▸</span><div>Same <b>ResourceServerAutoConfiguration</b>: decoder, default-deny chain, headers.</div></div>
+          <div class="li no"><span class="b">▸</span><div>Conditional on a <b>reactive web</b> app; opt-out with one property.</div></div>
+          <div class="li no"><span class="b">▸</span><div>Configure <code>issuer</code> / <code>audiences</code> for your IdP.</div></div>
+          <div class="li no"><span class="b">▸</span><div>Add <b>security-method-policy</b> for <code>@Secure</code> / <code>@PreAuthorize</code>.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px">
+      <div class="fnote" style="margin-bottom:8px"><span class="k">Shared configuration</span> — the only thing most services declare:</div>
+      <div class="cfg"><span class="c">firefly.security.resource-server</span>:
+  enabled: true                 <span class="k" style="color:#8a8fa6"># default for reactive web apps; opt-out switch</span>
+  permit-matchers: [ /actuator/health/**, /public/** ]   <span class="k" style="color:#8a8fa6"># the ONLY way a route is public</span>
+  issuer:    https://idp.example/realms/firefly
+  audiences: [ firefly-api ]
+  role-claim-paths:  [ roles, realm_access.roles, cognito:groups ]</div>
+    </div>
+  </div>
+</div></body></html>

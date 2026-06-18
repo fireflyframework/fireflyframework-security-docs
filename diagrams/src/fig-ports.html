@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1280px}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+  .pc{border:1px solid var(--line);border-radius:14px;padding:14px 15px;background:#fff;box-shadow:var(--sh);position:relative}
+  .pc::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--c,var(--brand))}
+  .pc .pn{font-family:'JetBrains Mono';font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .pc .pk{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .pc .ads{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .ad{font-size:11px;font-weight:700;font-family:'JetBrains Mono';padding:3px 9px;border-radius:999px;background:var(--cs,var(--brand-soft));color:var(--c,var(--brand-ink));border:1px solid color-mix(in srgb,var(--c,var(--brand)) 26%,#fff)}
+  .ad.dft{background:#EEF1F8;color:#52566f;border-color:#dfe3ee}
+  .ad.dock::after{content:"";display:inline-block;width:12px;height:12px;margin-left:5px;vertical-align:-2px;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3.5' y='10' width='4' height='5'/><rect x='10' y='10' width='4' height='5'/><rect x='16.5' y='10' width='4' height='5'/><rect x='10' y='4.6' width='4' height='4'/><path d='M2 15.5h20a4 4 0 0 1-4 3.5H6a4 4 0 0 1-4-3.5z'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3.5' y='10' width='4' height='5'/><rect x='10' y='10' width='4' height='5'/><rect x='16.5' y='10' width='4' height='5'/><rect x='10' y='4.6' width='4' height='4'/><path d='M2 15.5h20a4 4 0 0 1-4 3.5H6a4 4 0 0 1-4-3.5z'/></svg>") center/contain no-repeat}
+  .t-val{--c:var(--valid);--cs:var(--valid-soft)} .t-out{--c:var(--out);--cs:var(--out-soft)}
+  .t-rea{--c:var(--reason);--cs:var(--reason-soft)} .t-mem{--c:var(--memory);--cs:var(--memory-soft)}
+  .t-rag{--c:var(--rag);--cs:var(--rag-soft)} .t-too{--c:var(--tool);--cs:var(--tool-soft)}
+  .t-agt{--c:var(--agent);--cs:var(--agent-soft)} .t-ink{--c:#3A3D55;--cs:#ECEDF3}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">SPI → adapter coverage</div>
+      <div class="title">Every driven port has a real adapter</div>
+      <div class="sub">The core depends only on these ports; providers are pluggable. The container mark denotes an adapter verified against a real container.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="pgrid">
+      <div class="pc t-too"><div class="pn">TokenValidationPort</div><div class="pk">validate(BearerToken) → SecurityPrincipal</div><div class="ads"><span class="ad">resource-server · JWT</span><span class="ad">idp · opaque</span></div></div>
+      <div class="pc t-val"><div class="pn">PolicyDecisionPort</div><div class="pk">authorize(subject, action, resource) · ABAC</div><div class="ads"><span class="ad dft">embedded</span><span class="ad dock">OPA</span><span class="ad dock">Cerbos</span></div></div>
+      <div class="pc t-rea"><div class="pn">RelationshipPort</div><div class="pk">check(subject, relation, object) · ReBAC</div><div class="ads"><span class="ad dock">OpenFGA</span></div></div>
+      <div class="pc t-mem"><div class="pn">SecretsPort</div><div class="pk">getSecret(name) · no secrets in YAML</div><div class="ads"><span class="ad dock">Vault</span></div></div>
+      <div class="pc t-rag"><div class="pn">RevocationPort</div><div class="pk">isRevoked(id) / revoke(id, exp)</div><div class="ads"><span class="ad dock">R2DBC · Postgres</span></div></div>
+      <div class="pc t-agt"><div class="pn">KeyManagementPort</div><div class="pk">signing keys + JWKS + rotation</div><div class="ads"><span class="ad dft">in-memory</span><span class="ad dft">+ JWKS</span></div></div>
+      <div class="pc t-agt"><div class="pn">AuthorityMappingPort</div><div class="pk">claims → authorities / scopes</div><div class="ads"><span class="ad dft">ConfigurableAuthorityMapper</span></div></div>
+      <div class="pc t-mem"><div class="pn">TokenIntrospectionCachePort</div><div class="pk">cache opaque results · TTL ≤ exp</div><div class="ads"><span class="ad dft">Caffeine</span></div></div>
+      <div class="pc t-ink"><div class="pn">AuditEventPort</div><div class="pk">emit(SecurityAuditEvent)</div><div class="ads"><span class="ad dft">Logging</span></div></div>
+      <div class="pc t-ink"><div class="pn">IssuerRegistry · TenantResolver</div><div class="pk">multi-tenant issuer allow-list</div><div class="ads"><span class="ad dft">core</span></div></div>
+      <div class="pc t-ink"><div class="pn">SecurityContextPort</div><div class="pk">currentPrincipal() · Reactor context</div><div class="ads"><span class="ad dft">webflux</span></div></div>
+      <div class="pc t-ink"><div class="pn">PrincipalAttributeContributorPort</div><div class="pk">product extension seam</div><div class="ads"><span class="ad dft">product-supplied</span></div></div>
+    </div>
+    <div class="fnote" style="margin-top:14px"><span class="k">Fail-closed</span> Every adapter denies on error. <span class="k" style="margin-left:14px">Pattern</span> one provider SDK per adapter module; depends only on <span class="mono">security-spi</span>.</div>
+  </div>
+</div></body></html>

@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1280px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .cc{border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+  .cch{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;color:#fff;font-weight:800;font-size:14px}
+  .cch .tag{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.2)}
+  .bad .cch{background:linear-gradient(135deg,#b42318,#d64a3f)}
+  .good .cch{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+  .code{font-family:'JetBrains Mono';font-size:13px;line-height:1.7;padding:16px 18px;background:#15130d;color:#e9e3d6}
+  .code .kw{color:#ff9d4d}.code .ty{color:#7fd1c4}.code .rm{color:#ff6b6b;text-decoration:line-through;opacity:.7}.code .ad{color:#9ae6a4}
+  .code .cm{color:#8a8f73}
+  .ext{display:flex;gap:10px;margin-top:16px;align-items:flex-start;padding:14px 16px;border:1px solid var(--brand-soft-2);background:var(--brand-soft);border-radius:12px}
+  .ext .ic{font-size:18px;color:var(--brand)}
+  .ext .tx{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .src{display:flex;flex-wrap:wrap;gap:7px;padding:11px 16px;background:var(--surface);border-top:1px solid var(--line)}
+  .src .s{font-size:10.5px;font-weight:700;font-family:'JetBrains Mono';padding:3px 8px;border-radius:6px}
+  .src.bad .s{background:#FCE3E3;color:#b42318}.src.good .s{background:#DDF6E6;color:#1a7f4b}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Product-agnostic</div>
+      <div class="title">De-domaining the request context</div>
+      <div class="sub">The framework must hold no product concepts. Party, contract and product leave; a generic principal arrives.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="cols">
+
+      <div class="cc bad">
+        <div class="cch"><span>Before — firefly-oss leakage</span><span class="tag">removed</span></div>
+        <div class="code"><span class="kw">class</span> <span class="ty">AppContext</span> {
+  <span class="rm">UUID partyId;</span>        <span class="cm">// from X-Party-Id</span>
+  <span class="rm">UUID contractId;</span>
+  <span class="rm">UUID productId;</span>
+  Set&lt;String&gt; roles;
+  <span class="rm">UserRoleEnum userRole;</span>
+}</div>
+        <div class="src bad"><span class="s">X-Party-Id header</span><span class="s">SessionManager</span><span class="s">Security Center</span><span class="s">Contract/Product DTOs</span></div>
+      </div>
+
+      <div class="cc good">
+        <div class="cch"><span>After — product-agnostic</span><span class="tag">generic</span></div>
+        <div class="code"><span class="kw">class</span> <span class="ty">AppContext</span> {
+  <span class="ad">String subject;</span>      <span class="cm">// validated SecurityPrincipal</span>
+  UUID tenantId;        <span class="cm">// generic discriminator</span>
+  Set&lt;String&gt; roles;
+  Set&lt;String&gt; permissions;
+  <span class="ad">Map&lt;String,Object&gt; attributes;</span>
+}</div>
+        <div class="src good"><span class="s">SecurityContextPort</span><span class="s">SecurityPrincipal</span><span class="s">PolicyDecisionPort</span><span class="s">attributes</span></div>
+      </div>
+
+    </div>
+    <div class="ext"><div class="ic"><i class="i i-copy"></i></div><div class="tx"><b>Products keep their domain — outside the framework.</b> A product re-introduces party / contract / product by reading them off <span class="mono">SecurityPrincipal.attributes</span> / token claims, enriched through <span class="mono">PrincipalAttributeContributorPort</span>. The framework never knows about them.</div></div>
+  </div>
+</div></body></html>

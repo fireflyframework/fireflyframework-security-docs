@@ -1,0 +1,105 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1280px}
+  svg text{font-family:'Inter',sans-serif}
+  .mono-t{font-family:'JetBrains Mono',monospace}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Request sequence</div>
+      <div class="title">Validate · project · authorize · audit</div>
+      <div class="sub">Only a signature-validated principal reaches the controller; every decision is fail-closed and audited.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <svg width="100%" viewBox="0 0 1260 560" font-size="13">
+      <defs>
+        <marker id="call" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#3A3D55"/></marker>
+        <marker id="ret" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#9398AE"/></marker>
+        <marker id="async" markerWidth="12" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8" fill="none" stroke="#6A6F88" stroke-width="1.6"/></marker>
+      </defs>
+
+      <!-- participant headers + lifelines -->
+      <!-- Client 100, Filter 312, TVP 524, PDP 736, Ctrl 948, Audit 1160 -->
+      <g>
+        <rect x="20"  y="6" width="160" height="40" rx="11" fill="#DDF6E6" stroke="#22C55E" stroke-width="1.6"/>
+        <text x="100" y="31" text-anchor="middle" font-weight="800" fill="#15803d">Client</text>
+        <rect x="232" y="6" width="160" height="40" rx="11" fill="#FEF1D6" stroke="#F68000" stroke-width="1.6"/>
+        <text x="312" y="25" text-anchor="middle" font-weight="800" fill="#b45309" font-size="11.5">SecurityWeb</text>
+        <text x="312" y="39" text-anchor="middle" font-weight="800" fill="#b45309" font-size="11.5">FilterChain</text>
+        <rect x="444" y="6" width="160" height="40" rx="11" fill="#F1EBFE" stroke="#8B5CF6" stroke-width="1.6"/>
+        <text x="524" y="31" text-anchor="middle" font-weight="800" fill="#6d28d9" font-size="12" class="mono-t">TokenValidationPort</text>
+        <rect x="656" y="6" width="160" height="40" rx="11" fill="#FCE7F3" stroke="#EC4899" stroke-width="1.6"/>
+        <text x="736" y="31" text-anchor="middle" font-weight="800" fill="#be185d" font-size="12" class="mono-t">PolicyDecisionPort</text>
+        <rect x="868" y="6" width="160" height="40" rx="11" fill="#FCE3E3" stroke="#EF4444" stroke-width="1.6"/>
+        <text x="948" y="31" text-anchor="middle" font-weight="800" fill="#b91c1c">Controller</text>
+        <rect x="1080" y="6" width="160" height="40" rx="11" fill="#ECEDF3" stroke="#3A3D55" stroke-width="1.6"/>
+        <text x="1160" y="31" text-anchor="middle" font-weight="800" fill="#3A3D55" font-size="12" class="mono-t">AuditEventPort</text>
+      </g>
+      <g stroke="#C9CDDC" stroke-width="1.4" stroke-dasharray="3 5">
+        <line x1="100" y1="46" x2="100" y2="548"/><line x1="312" y1="46" x2="312" y2="548"/>
+        <line x1="524" y1="46" x2="524" y2="548"/><line x1="736" y1="46" x2="736" y2="548"/>
+        <line x1="948" y1="46" x2="948" y2="548"/><line x1="1160" y1="46" x2="1160" y2="548"/>
+      </g>
+
+      <!-- activation bars -->
+      <g fill="#fff" stroke="#C9CDDC" stroke-width="1">
+        <rect x="306" y="78"  width="12" height="430" rx="3" fill="#FEF6E6"/>
+        <rect x="518" y="120" width="12" height="78"  rx="3" fill="#F4EEFE"/>
+        <rect x="730" y="242" width="12" height="56"  rx="3" fill="#FDECF4"/>
+        <rect x="942" y="372" width="12" height="56"  rx="3" fill="#FDECEC"/>
+      </g>
+
+      <!-- messages -->
+      <g stroke="#3A3D55" stroke-width="1.8">
+        <line x1="100" y1="90"  x2="306" y2="90"  marker-end="url(#call)"/>
+        <line x1="318" y1="120" x2="518" y2="120" marker-end="url(#call)"/>
+        <line x1="318" y1="244" x2="730" y2="244" marker-end="url(#call)"/>
+        <line x1="318" y1="330" x2="1154" y2="330" stroke="#6A6F88" marker-end="url(#async)"/>
+      </g>
+      <!-- returns (dashed) -->
+      <g stroke="#9398AE" stroke-width="1.6" stroke-dasharray="5 4">
+        <line x1="518" y1="198" x2="318" y2="198" marker-end="url(#ret)"/>
+        <line x1="730" y1="298" x2="318" y2="298" marker-end="url(#ret)"/>
+      </g>
+      <!-- self note on TVP -->
+      <path d="M530 150 h70 v26 h-58 l-12 12 z" fill="#F4EEFE" stroke="#8B5CF6" stroke-width="1.1"/>
+      <text x="538" y="167" font-size="10.5" fill="#6d28d9">verify sig · iss/aud/exp</text>
+
+      <!-- message labels -->
+      <g fill="#2C2E47" font-size="12">
+        <text x="120" y="84" class="mono-t">GET /api · Bearer &lt;jwt&gt;</text>
+        <text x="324" y="114" class="mono-t">validate(token)</text>
+        <text x="320" y="222" font-size="11" fill="#9398AE">SecurityPrincipal (or 401)</text>
+        <text x="324" y="238" class="mono-t">authorize(principal, action, resource)</text>
+        <text x="324" y="292" font-size="11" fill="#9398AE">PERMIT / DENY</text>
+        <text x="324" y="324" class="mono-t" fill="#6A6F88">emit(decision) · async</text>
+      </g>
+      <!-- note over filter -->
+      <rect x="232" y="56" width="160" height="20" rx="6" fill="#FEF1D6" stroke="#F68000" stroke-width="1"/>
+      <text x="312" y="70" text-anchor="middle" font-size="10.5" fill="#b45309" font-weight="700">default-deny · hardened headers</text>
+
+      <!-- alt frame -->
+      <rect x="60" y="356" width="1090" height="180" rx="8" fill="none" stroke="#C9CDDC" stroke-width="1.4"/>
+      <path d="M60 356 h70 v20 h-58 l-12 -12 z" fill="#EEF1F8" stroke="#C9CDDC" stroke-width="1"/>
+      <text x="70" y="370" font-size="11" font-weight="800" fill="#52566f">alt</text>
+      <text x="138" y="370" font-size="11" font-weight="800" fill="#16A34A">[ PERMIT ]</text>
+
+      <g stroke="#3A3D55" stroke-width="1.8">
+        <line x1="318" y1="384" x2="942" y2="384" marker-end="url(#call)"/>
+      </g>
+      <g stroke="#9398AE" stroke-width="1.6" stroke-dasharray="5 4">
+        <line x1="942" y1="428" x2="100" y2="428" marker-end="url(#ret)"/>
+      </g>
+      <text x="324" y="378" font-size="12" class="mono-t" fill="#2C2E47">invoke()</text>
+      <text x="110" y="422" font-size="11" fill="#15803d" font-weight="700">200 OK</text>
+
+      <line x1="60" y1="452" x2="1150" y2="452" stroke="#C9CDDC" stroke-width="1.1" stroke-dasharray="4 4"/>
+      <text x="138" y="470" font-size="11" font-weight="800" fill="#D92D20">[ DENY ]</text>
+      <g stroke="#9398AE" stroke-width="1.6" stroke-dasharray="5 4">
+        <line x1="306" y1="500" x2="100" y2="500" marker-end="url(#ret)"/>
+      </g>
+      <text x="110" y="494" font-size="11" fill="#b91c1c" font-weight="700">401 (no/invalid token) · 403 (policy)</text>
+    </svg>
+    <div class="fnote" style="margin-top:12px"><span class="k">Fail-closed</span> a validation failure → 401; a policy denial or PDP error → 403. <span class="k" style="margin-left:14px">JWT vs opaque</span> the decoder verifies JWTs; opaque tokens take the IdP introspection + cache path behind the same port.</div>
+  </div>
+</div></body></html>

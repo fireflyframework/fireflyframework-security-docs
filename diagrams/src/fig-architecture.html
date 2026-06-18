@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="kit.css">
+<style> body{padding:34px} #fig{width:1300px}
+  .lstack{display:flex;flex-direction:column;gap:9px}
+  .layer .lab{width:200px}
+  .node{padding:11px 13px}
+  .node .nt{font-size:13.5px}.node .nd{font-size:11px;margin-top:3px}
+  .node .ic{width:27px;height:27px;border-radius:8px}
+  .node .ic .i{font-size:15px}
+  .node .ic .mono{font-size:13px;font-weight:800}
+  .seam{display:flex;align-items:center;gap:10px;margin:2px 0;padding:7px 16px;border:1.5px dashed var(--brand);
+    background:var(--brand-soft);border-radius:999px;align-self:center;font-weight:750;color:var(--brand-ink);font-size:13.5px}
+  .seam .mono{font-size:12px;color:var(--brand-ink)}.seam .i{font-size:16px}
+</style></head>
+<body><div id="fig" class="frame">
+  <div class="head">
+    <div><div class="eyebrow">Hexagonal platform</div>
+      <div class="title">The security platform, layered</div>
+      <div class="sub">Driving ports &amp; domain → driven ports → neutral engine → reactive binding → delivery → adapters, with the IdP tier joined by a single seam.</div></div>
+    <div class="brandmark"><div class="spark"></div><div class="wm">Firefly<small>security</small></div></div>
+  </div>
+  <div class="body">
+    <div class="lstack">
+
+      <div class="layer">
+        <div class="lab"><div class="k">Consumer</div><div class="v">Your service</div><div class="vs">reactive / WebFlux</div></div>
+        <div class="cont">
+          <div class="node t-ink"><div class="nh"><div class="ic"><i class="i i-box"></i></div><div class="nt">Firefly reactive service / BFF</div></div><div class="nd">controllers, handlers, domain logic — zero security code</div></div>
+        </div>
+      </div>
+
+      <div class="layer accent">
+        <div class="lab"><div class="k">Starters (3)</div><div class="v">delivery tier</div><div class="vs">only core · domain · application</div></div>
+        <div class="cont">
+          <div class="node t-ink"><div class="nh"><div class="ic"><i class="i i-box"></i></div><div class="nt">starter-core</div></div></div>
+          <div class="node t-ink"><div class="nh"><div class="ic"><i class="i i-box"></i></div><div class="nt">starter-domain</div></div></div>
+          <div class="node t-valid"><div class="nh"><div class="ic"><i class="i i-star"></i></div><div class="nt">starter-application</div></div><div class="nd">pulls security ⇒ secure-by-default</div></div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lab"><div class="k">Security · delivery</div><div class="v">starters / standalone</div><div class="vs">reactive (+ servlet authz-server)</div></div>
+        <div class="cont">
+          <div class="node t-valid"><div class="nh"><div class="ic"><i class="i i-shield"></i></div><div class="nt">resource-server</div></div><div class="nd">JWT/opaque · default-deny · headers</div></div>
+          <div class="node t-valid"><div class="nh"><div class="ic"><i class="i i-bolt"></i></div><div class="nt">method-policy</div></div><div class="nd">@Secure · @PreAuthorize</div></div>
+          <div class="node t-valid"><div class="nh"><div class="ic"><i class="i i-refresh"></i></div><div class="nt">oauth2-client</div></div><div class="nd">BFF · token relay</div></div>
+          <div class="node t-gov"><div class="nh"><div class="ic"><i class="i i-building"></i></div><div class="nt">authorization-server</div></div><div class="nd">servlet OIDC · separate deployable</div></div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lab"><div class="k">Security · engine</div><div class="v">framework-neutral</div><div class="vs">no vendor SDK</div></div>
+        <div class="cont">
+          <div class="node t-agent"><div class="nh"><div class="ic"><i class="i i-chip"></i></div><div class="nt">webflux</div></div><div class="nd">Spring Security binding · URL PEP · SecurityContextPort</div></div>
+          <div class="node t-agent"><div class="nh"><div class="ic"><i class="i i-gear"></i></div><div class="nt">core</div></div><div class="nd">authority mapping · @Secure evaluator · embedded PDP · cache · in-memory keys/JWKS</div></div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lab"><div class="k">Ports</div><div class="v">the hexagon</div><div class="vs">api + spi</div></div>
+        <div class="cont">
+          <div class="node t-tool"><div class="nh"><div class="ic"><i class="i i-arrow-r"></i></div><div class="nt">security-api</div></div><div class="nd">driving ports · SecurityPrincipal · @Secure</div></div>
+          <div class="node t-tool"><div class="nh"><div class="ic"><i class="i i-arrow-l"></i></div><div class="nt">security-spi</div></div><div class="nd">driven ports: TokenValidation · PolicyDecision · Relationship · KeyManagement · Secrets · Revocation · Audit</div></div>
+        </div>
+      </div>
+
+      <div class="seam"><i class="i i-link"></i> single join &nbsp;·&nbsp; <span class="mono">TokenValidationPort</span> &nbsp;·&nbsp; JWT → decoder + JWKS &nbsp;|&nbsp; opaque → introspection + cache</div>
+
+      <div class="layer">
+        <div class="lab"><div class="k">IdP tier</div><div class="v">decoupled</div><div class="vs">config-selected provider</div></div>
+        <div class="cont">
+          <div class="node t-in"><div class="nh"><div class="ic"><i class="i i-hex"></i></div><div class="nt">idp</div></div><div class="nd">segregated capability ports + aggregate</div></div>
+          <div class="node t-in"><div class="nh"><div class="ic"><span class="mono">K</span></div><div class="nt">keycloak</div></div></div>
+          <div class="node t-in"><div class="nh"><div class="ic"><span class="mono">A</span></div><div class="nt">aws-cognito</div></div></div>
+          <div class="node t-in"><div class="nh"><div class="ic"><span class="mono">Z</span></div><div class="nt">azure-ad</div></div></div>
+          <div class="node t-in"><div class="nh"><div class="ic"><span class="mono">D</span></div><div class="nt">internal-db</div></div></div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lab"><div class="k">Adapters</div><div class="v">pluggable providers</div><div class="vs">one SDK each · fail-closed</div></div>
+        <div class="cont">
+          <div class="node t-out"><div class="nh"><div class="ic"><i class="i i-scale"></i></div><div class="nt">OPA</div></div><div class="nd">ABAC · PolicyDecisionPort</div></div>
+          <div class="node t-out"><div class="nh"><div class="ic"><i class="i i-scale"></i></div><div class="nt">Cerbos</div></div><div class="nd">ABAC · PolicyDecisionPort</div></div>
+          <div class="node t-reason"><div class="nh"><div class="ic"><i class="i i-share"></i></div><div class="nt">OpenFGA</div></div><div class="nd">ReBAC · RelationshipPort</div></div>
+          <div class="node t-memory"><div class="nh"><div class="ic"><i class="i i-key"></i></div><div class="nt">Vault</div></div><div class="nd">SecretsPort</div></div>
+          <div class="node t-rag"><div class="nh"><div class="ic"><i class="i i-db"></i></div><div class="nt">R2DBC</div></div><div class="nd">RevocationPort · Postgres</div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="fnote" style="margin-top:14px"><span class="k">Rule</span> The core never imports a vendor SDK — providers are adapters behind <span class="mono">security-spi</span>. Identity is always a signature-validated <span class="mono">SecurityPrincipal</span>, never a trusted header.</div>
+  </div>
+</div></body></html>
