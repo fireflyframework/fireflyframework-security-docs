@@ -25,7 +25,7 @@ other, sitting on top of a framework that had no real authentication enforcement
 - **Half 1 — the IdP broker** (`fireflyframework-security-idp` + four vendor adapters). A single *fat*
   reactive port (`IdpAdapter`, 21 methods plus a default `registerUser`) with 24 vendor-neutral
   DTOs and a 1:1 passthrough `IdpController` under `/idp`. The provider was chosen by
-  `firefly.idp.provider`: **keycloak** (Admin Client + WebClient OIDC), **aws-cognito** (sync SDK
+  `firefly.security.idp.provider`: **keycloak** (Admin Client + WebClient OIDC), **aws-cognito** (sync SDK
   v2), **azure-ad** (MSAL4J + Microsoft Graph), and **internal-db** (a real first-party auth
   service: R2DBC store, BCrypt(12), JJWT HS256, lockout, password policy/reset, TOTP).
 - **Half 2 — resource-server / authz** (custom code in `starter-application` and `backoffice`).
